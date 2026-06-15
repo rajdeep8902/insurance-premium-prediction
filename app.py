@@ -31,6 +31,12 @@ class UserInput(BaseModel):
     city: Annotated[str, Field(..., description="The city of the user")]
     occupation: Annotated[Literal["retired", "freelancer", "student", "governement_job", "business_owner", "unemployed", "private_job"], Field(..., description="Occupation of the user")]
     
+    @field_validator("city")
+    @classmethod
+    def normalize_city(cls, v: str) -> str:
+        v = v.strip().title()
+        return v
+    
     @computed_field
     @property
     def bmi(self) -> float:
